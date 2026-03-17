@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=auto");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: black;
+    --color-bg-secondary: #18181b;
+    --color-primary: #199afc;
+    --color-text-main: #f8fafc;
+    --color-text-secondary: #94a3b8;
+    --color-accent-pink: #f472b6;
+    --color-primary-hover: #06b6d4;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+
+    ::selection {
+      background-color: rgba(34, 211, 238, 0.3);
+      color: var(--color-text-main);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      @apply font-bold text-main;
+    }
+
+    h1 {
+      @apply text-4xl md:text-5xl;
+    }
+
+    h2 {
+      @apply text-3xl md:text-4xl;
+    }
+
+    h3 {
+      @apply text-2xl md:text-3xl;
+    }
+  }
+}
