@@ -65,7 +65,7 @@ const streamers = [
         <img src="/icons/arrow.svg" alt="Toggle" class="w-5 h-5" :class="{ 'rotate-180': isCollapsed }" />
       </button>
     </div>
-    <ul class="space-y-3 px-1">
+    <ul class="space-y-3 px-2">
       <li v-for="streamer in streamers" :key="streamer.id">
         <div
           class="flex items-center gap-3 p-2 cursor-pointer relative group w-full"
