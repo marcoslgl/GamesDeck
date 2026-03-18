@@ -8,10 +8,10 @@
   :root {
     --color-bg: black;
     --color-bg-secondary: #18181b;
-    --color-bg-tertiary: #53535f;
-    --color-primary: #199afc;
+    --color-bg-tertiary: #26262c;
     --color-text-main: #f8fafc;
-    --color-text-secondary: #94a3b8;
+    --color-primary: #199afc;
+    --color-text-secondary: #53535f;
     --color-accent-pink: #f472b6;
     --color-primary-hover: #06b6d4;
   }
@@ -45,5 +45,14 @@
     h3 {
       @apply text-2xl md:text-3xl;
     }
+  }
+}
+
+@layer components {
+  .focus-ring-3sides:focus-within {
+    box-shadow:
+      inset 2px -2px 0 0 var(--color-primary),
+      inset -2px -2px 0 0 var(--color-primary),
+      inset -2px 2px 0 0 var(--color-primary);
   }
 }

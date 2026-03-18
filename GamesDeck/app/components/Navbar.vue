@@ -2,11 +2,13 @@
 import { ref } from "vue";
 
 const searchQuery = ref("");
+const showSearchDropdown = ref(false);
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
     console.log("Searching for:", searchQuery.value);
     // Aquí puedes agregar la lógica de búsqueda
+    showSearchDropdown.value = false;
   }
 };
 
@@ -14,6 +16,10 @@ const handleKeyDown = (e: KeyboardEvent) => {
   if (e.key === "Enter") {
     handleSearch();
   }
+};
+
+const toggleSearchDropdown = () => {
+  showSearchDropdown.value = !showSearchDropdown.value;
 };
 </script>
 
@@ -26,15 +32,15 @@ const handleKeyDown = (e: KeyboardEvent) => {
       </div>
     </div>
 
-    <div class="flex-1 px-3 flex justify-center hidden md:flex">
+    <div class="flex-1 justify-center hidden md:flex">
       <div
-        class="border border-bgTertiary rounded-l-md px-3 py-2 flex items-center gap-2 hover:bg-opacity-80 transition-all focus-within:ring-2 focus-within:ring-primary focus-within:border-primary w-full relative max-w-sm"
+        class="border border-main rounded-l-md px-3 py-2 flex items-center gap-2 hover:bg-opacity-80 transition-all focus-within:ring-2 focus-within:ring-primary focus-within:border-primary w-full relative max-w-sm"
       >
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Search"
-          class="bg-transparent outline-none text-sm text-white placeholder-gray-400 flex-1"
+          class="bg-transparent outline-none text-sm text-white placeholder-bg-bgTertiary flex-1"
           @keydown="handleKeyDown"
         />
         <button
@@ -48,19 +54,69 @@ const handleKeyDown = (e: KeyboardEvent) => {
       <button
         :disabled="!searchQuery.trim()"
         @click="handleSearch"
-        class="bg-bgTertiary opacity-70 rounded-r-md px-2 border-l-0 hover:bg-opacity-80 transition-all bg-opacity-0 hover:bg-bgTertiary flex items-center justify-center disabled:cursor-not-allowed"
+        class="bg-bgTertiary rounded-r-md px-2 h-10 border-l-0 flex items-center justify-center disabled:cursor-not-allowed flex-shrink-0"
       >
         <img src="/icons/search.svg" alt="Search" class="w-4 h-4" />
       </button>
     </div>
 
-    <div class="flex items-center space-x-4">
-      <div class="bg-bgSecondary rounded-full p-2 hover:bg-bgTertiary transition-colors cursor-pointer">
+    <div class="flex items-center space-x-3 relative">
+      <div class="relative">
+        <button
+          @click="toggleSearchDropdown"
+          class="bg-bgSecondary w-10 h-10 rounded-full hover:bg-bgTertiary transition-colors cursor-pointer flex items-center justify-center md:hidden"
+        >
+          <img src="/icons/search.svg" alt="Search" class="w-4 h-4" />
+        </button>
+
+        <div v-if="showSearchDropdown" class="absolute top-12 right-0 z-50 md:hidden flex">
+          <div
+            class="border border-main rounded-l-md px-3 py-2 flex items-center gap-2 transition-all focus-within:ring-2 focus-within:ring-primary focus-within:border-primary w-64 relative focus-ring-3sides bg-bgSecondary"
+          >
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search"
+              class="bg-transparent outline-none text-sm text-white placeholder-gray-400 flex-1"
+              @keydown="handleKeyDown"
+              autofocus
+            />
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''"
+              class="absolute right-12 top-1/2 -translate-y-1/2 hover:text-white transition-colors text-xl leading-none"
+            >
+              ✕
+            </button>
+          </div>
+          <button
+            :disabled="!searchQuery.trim()"
+            @click="handleSearch"
+            class="bg-secondary opacity-70 rounded-r-md px-2 h-10 border-l-0 flex items-center justify-center disabled:cursor-not-allowed flex-shrink-0"
+          >
+            <img src="/icons/search.svg" alt="Search" class="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="bg-bgSecondary w-10 h-10 rounded-full hover:bg-bgTertiary transition-colors cursor-pointer flex items-center justify-center"
+      >
         <img src="/icons/crown.svg" alt="info" class="w-4 h-4" />
       </div>
-      <NuxtLink to="/" class="bg-bgTertiary py-1 px-2 rounded hover:brightness-125 transition-all">Log In</NuxtLink>
-      <NuxtLink to="/" class="bg-primary py-1 px-2 rounded hover:opacity-70 transition-opacity">Sign Up</NuxtLink>
-      <div class="bg-bgSecondary rounded-full p-2 hover:bg-bgTertiary transition-colors cursor-pointer">
+      <NuxtLink
+        to="/"
+        class="bg-bgTertiary py-1 px-3 rounded-full hover:bg-secondary transition-all whitespace-nowrap flex-shrink-0"
+        >Log In</NuxtLink
+      >
+      <NuxtLink
+        to="/"
+        class="bg-primary py-1 px-3 rounded-full hover:opacity-70 transition-opacity whitespace-nowrap flex-shrink-0"
+        >Sign Up</NuxtLink
+      >
+      <div
+        class="bg-bgSecondary w-10 h-10 rounded-full hover:bg-bgTertiary transition-colors cursor-pointer flex items-center justify-center"
+      >
         <img src="/icons/user.svg" alt="Menu" class="w-4 h-4" />
       </div>
     </div>
