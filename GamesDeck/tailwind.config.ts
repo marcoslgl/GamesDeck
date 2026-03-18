@@ -9,6 +9,7 @@ export default <Partial<Config>>{
       colors: {
         bg: "var(--color-bg)",
         bgSecondary: "var(--color-bg-secondary)",
+        bgTertiary: "var(--color-bg-tertiary)",
         primary: "var(--color-primary)",
         primaryHover: "var(--color-primary-hover)",
         secondary: "var(--color-text-secondary)",
