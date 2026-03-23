@@ -1,4 +1,3 @@
-// Caché en servidor para el token de Twitch
 interface TokenCache {
   accessToken: string;
   expiresAt: number;
@@ -17,7 +16,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Verificar si el token en caché sigue siendo válido
   if (tokenCache && tokenCache.expiresAt > Date.now()) {
     return {
       accessToken: tokenCache.accessToken,
@@ -26,7 +24,6 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Hacer la llamada POST a Twitch para obtener un nuevo token
     const response = await fetch("https://id.twitch.tv/oauth2/token", {
       method: "POST",
       headers: {
@@ -49,8 +46,6 @@ export default defineEventHandler(async (event) => {
       expires_in: number;
     };
 
-    // Cachear el token con su fecha de expiración
-    // Restamos 5 minutos como buffer de seguridad
     const expiresInMs = (data.expires_in - 300) * 1000;
     tokenCache = {
       accessToken: data.access_token,

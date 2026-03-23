@@ -1,11 +1,3 @@
-export interface Streamer {
-  id: number;
-  name: string;
-  category: string;
-  image: string;
-  viewers: number;
-}
-
 export interface Category {
   id: number;
   name: string;

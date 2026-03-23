@@ -132,167 +132,6 @@ export const useMainStore = defineStore("main", {
       },
     ] as Category[],
 
-    recommendedStreamers: [
-      {
-        id: 1,
-        name: "xQcOW",
-        category: "Just Chatting",
-        image: "/icon.svg",
-        viewers: 15200,
-      },
-      {
-        id: 2,
-        name: "Sykkuno",
-        category: "League of Legends",
-        image: "/icon.svg",
-        viewers: 8900,
-      },
-      {
-        id: 3,
-        name: "Pokimane",
-        category: "Valorant",
-        image: "/icon.svg",
-        viewers: 12500,
-      },
-      {
-        id: 4,
-        name: "Myth",
-        category: "Fortnite",
-        image: "/icon.svg",
-        viewers: 5600,
-      },
-      {
-        id: 5,
-        name: "Valkyrae",
-        category: "Elden Ring",
-        image: "/icon.svg",
-        viewers: 7800,
-      },
-    ] as Streamer[],
-
-    liveChannels: [
-      {
-        id: 1,
-        title: "Ranked Grind to Immortal",
-        streamer: "TenZ",
-        thumbnail: "/ejemplo.svg",
-        viewers: 28500,
-        category: "Valorant",
-        isLive: true,
-        tags: ["Competitive", "DropsActivados"],
-      },
-      {
-        id: 2,
-        title: "Chill Stream - Chatting",
-        streamer: "Valkyrae",
-        thumbnail: "/ejemplo.svg",
-        viewers: 12300,
-        category: "Just Chatting",
-        isLive: true,
-        tags: ["Casual", "DropsActivados"],
-      },
-      {
-        id: 3,
-        title: "Tournament Preparation",
-        streamer: "Autumn",
-        thumbnail: "/ejemplo.svg",
-        viewers: 8900,
-        category: "Valorant",
-        isLive: true,
-        tags: ["Competitive", "Training"],
-      },
-      {
-        id: 4,
-        title: "League Competitive",
-        streamer: "Faker",
-        thumbnail: "/ejemplo.svg",
-        viewers: 45600,
-        category: "League of Legends",
-        isLive: true,
-        tags: ["Pro", "Competitive"],
-      },
-      {
-        id: 5,
-        title: "Speedrun Challenge",
-        streamer: "Elajjaz",
-        thumbnail: "/ejemplo.svg",
-        viewers: 18200,
-        category: "Elden Ring",
-        isLive: true,
-        tags: ["Speedrun", "Challenge"],
-      },
-      {
-        id: 6,
-        title: "Creative Build Stream",
-        streamer: "Pokimane",
-        thumbnail: "/ejemplo.svg",
-        viewers: 22100,
-        category: "Minecraft",
-        isLive: true,
-        tags: ["Creative", "Building"],
-      },
-      {
-        id: 7,
-        title: "Arena Battles",
-        streamer: "Ninja",
-        thumbnail: "/ejemplo.svg",
-        viewers: 38900,
-        category: "Fortnite",
-        isLive: true,
-        tags: ["Competitive", "DropsActivados"],
-      },
-      {
-        id: 8,
-        title: "Story Campaign",
-        streamer: "Sykkuno",
-        thumbnail: "/ejemplo.svg",
-        viewers: 16700,
-        category: "Elden Ring",
-        isLive: true,
-        tags: ["Story", "SinglePlayer"],
-      },
-      {
-        id: 9,
-        title: "Competitive Matches",
-        streamer: "ScreaM",
-        thumbnail: "/ejemplo.svg",
-        viewers: 32400,
-        category: "Valorant",
-        isLive: true,
-        tags: ["Competitive", "Pro"],
-      },
-      {
-        id: 10,
-        title: "Just Vibes",
-        streamer: "xQcOW",
-        thumbnail: "/ejemplo.svg",
-        viewers: 52100,
-        category: "Just Chatting",
-        isLive: true,
-        tags: ["Casual", "Chill"],
-      },
-      {
-        id: 11,
-        title: "Co-op Adventure",
-        streamer: "Toast",
-        thumbnail: "/ejemplo.svg",
-        viewers: 19800,
-        category: "Minecraft",
-        isLive: true,
-        tags: ["Multiplayer", "Adventure"],
-      },
-      {
-        id: 12,
-        title: "Ranked Push",
-        streamer: "SugarPete",
-        thumbnail: "/ejemplo.svg",
-        viewers: 14500,
-        category: "League of Legends",
-        isLive: true,
-        tags: ["Competitive", "Ranked"],
-      },
-    ] as LiveChannel[],
-
     mainCategories: [
       {
         id: 1,
@@ -329,19 +168,11 @@ export const useMainStore = defineStore("main", {
 
   getters: {
     getCategoriesCount: (state) => state.categories.length,
-    getStreamersCount: (state) => state.recommendedStreamers.length,
-    getLiveChannelsCount: (state) => state.liveChannels.length,
   },
 
   actions: {
     getCategoryById(id: number) {
       return this.categories.find((cat) => cat.id === id);
-    },
-    getStreamerById(id: number) {
-      return this.recommendedStreamers.find((streamer) => streamer.id === id);
-    },
-    getLiveChannelById(id: number) {
-      return this.liveChannels.find((channel) => channel.id === id);
     },
   },
 });

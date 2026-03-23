@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { useMainStore } from "../stores/main";
+import { ref, computed, onMounted } from "vue";
+import { useTwitch } from "../composables/useTwitch";
 
-const mainStore = useMainStore();
+const { streams, loading, fetchStreams } = useTwitch();
 const isCollapsedState = ref(false);
 
 const toggleSidebar = () => {
@@ -10,6 +10,12 @@ const toggleSidebar = () => {
 };
 
 const isCollapsed = computed(() => isCollapsedState.value);
+
+const recommendedStreams = computed(() => streams.value.slice(0, 8));
+
+onMounted(() => {
+  fetchStreams();
+});
 </script>
 
 <template>
@@ -30,21 +36,25 @@ const isCollapsed = computed(() => isCollapsedState.value);
       </button>
     </div>
     <ul class="space-y-3 px-2" role="list" aria-label="Canales recomendados">
-      <li v-for="streamer in mainStore.recommendedStreamers" :key="streamer.id">
+      <li v-for="streamer in recommendedStreams" :key="streamer.id">
         <div
           class="flex items-center gap-3 p-2 cursor-pointer relative group w-full"
           :class="{ 'justify-center': isCollapsed }"
         >
           <div class="flex-shrink-0">
-            <img :src="streamer.image" :alt="streamer.name" class="w-10 h-10 rounded-full object-cover" />
+            <img
+              :src="streamer.profile_image_url"
+              :alt="streamer.user_name"
+              class="w-10 h-10 rounded-full object-cover"
+            />
           </div>
           <div v-if="!isCollapsed" class="flex-1 min-w-0">
-            <p class="text-md opacity-70 truncate">{{ streamer.name }}</p>
-            <p class="text-sm opacity-70 truncate">{{ streamer.category }}</p>
+            <p class="text-md opacity-70 truncate">{{ streamer.user_name }}</p>
+            <p class="text-sm opacity-70 truncate">{{ streamer.game_name }}</p>
           </div>
           <div v-if="!isCollapsed" class="flex items-center gap-1 text-xs flex-shrink-0">
             <img src="/icons/active.svg" alt="Live" class="w-2 h-2" />
-            <span class="whitespace-nowrap opacity-70">{{ streamer.viewers.toLocaleString() }}</span>
+            <span class="whitespace-nowrap opacity-70">{{ streamer.viewer_count.toLocaleString() }}</span>
           </div>
         </div>
       </li>
