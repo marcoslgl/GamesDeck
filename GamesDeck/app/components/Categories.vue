@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useMainStore } from "../stores/main";
+import { useTwitchCategories } from "../composables/useTwitchCategories";
+import CategoryCardSkeleton from "./CategoryCardSkeleton.vue";
 
 const mainStore = useMainStore();
+const { categories, loading, fetchCategories } = useTwitchCategories();
 const gridContainer = ref<HTMLElement | null>(null);
 const columnsInRow = ref(0);
 
-// Computed properties
 const displayedCategories = computed(() => {
-  return mainStore.categories.slice(0, columnsInRow.value);
+  return categories.value.slice(0, columnsInRow.value);
 });
 
-// Lifecycle hooks
+const getThumbnailUrl = (url: string): string => {
+  return url.replace("{width}", "264").replace("{height}", "352");
+};
+
+const formatViewers = (count: number): string => {
+  return Math.round((count || 0) / 1000).toString();
+};
+
 onMounted(async () => {
+  fetchCategories();
+
   if (!gridContainer.value) return;
 
   const calculateColumns = () => {
@@ -38,13 +49,17 @@ onMounted(async () => {
 
 <template>
   <section ref="gridContainer" class="w-full pb-3" aria-label="Game categories">
-    <h2 class="text-sm font-semibold pl-4 pt-4 pb-3">
+    <h2 class="text-lg font-semibold pl-4 pt-4 pb-3">
       <span class="text-primary">Categories </span>we think you'll like
     </h2>
 
     <div data-grid class="px-2 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-2">
+      <template v-if="loading">
+        <CategoryCardSkeleton v-for="i in 7" :key="`skeleton-${i}`" />
+      </template>
       <div
         v-for="category in displayedCategories"
+        v-else
         :key="category.id"
         class="group cursor-pointer flex flex-col"
         role="button"
@@ -58,8 +73,8 @@ onMounted(async () => {
           style="aspect-ratio: 1 / 1.3"
         >
           <img
-            :src="category.image"
-            :alt="`${category.name} category with ${category.viewerCount.toLocaleString()} viewers`"
+            :src="getThumbnailUrl(category.box_art_url)"
+            :alt="category.name"
             loading="lazy"
             class="w-full h-full object-cover"
           />
@@ -70,7 +85,7 @@ onMounted(async () => {
             {{ category.name }}
           </h3>
 
-          <p class="text-sm opacity-70">{{ (category.viewerCount / 1000).toFixed(0) }}K viewers</p>
+          <p class="text-sm opacity-70">{{ formatViewers(category.viewer_count || 0) }}k viewers</p>
           <div
             v-if="category.tags"
             class="flex gap-1 flex-nowrap overflow-hidden"
@@ -103,9 +118,9 @@ onMounted(async () => {
           @keydown.space="$emit('select-main', mainCat)"
         >
           <div
-            class="px-4 rounded-lg transition-all hover:shadow-lg hover:opacity-70 flex items-start justify-between bg-blue-500 h-12 relative overflow-visible"
+            class="px-4 rounded-lg transition-all hover:shadow-lg hover:opacity-70 flex items-start justify-between bg-primary h-12 relative overflow-visible"
           >
-            <h4 class="text-lg font-bold text-white flex-1 self-center relative z-10 whitespace-normal">
+            <h4 class="text-lg font-bold text-main flex-1 self-center relative z-10 whitespace-normal">
               {{ mainCat.name }}
             </h4>
             <img :src="mainCat.icon" :alt="`${mainCat.name} icon`" class="w-20 h-20 flex-shrink-0 ml-3 -mt-4" />

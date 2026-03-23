@@ -14,7 +14,7 @@ export default <Partial<Config>>{
         primaryHover: "var(--color-primary-hover)",
         secondary: "var(--color-text-secondary)",
         main: "var(--color-text-main)",
-        accent: "var(--color-accent-pink)",
+        accent: "var(--color-accent)",
         "dark-deep": "var(--color-bg)",
       },
     },

@@ -41,13 +41,13 @@ const toggleSearchDropdown = () => {
             v-model="searchQuery"
             type="text"
             placeholder="Search"
-            class="bg-transparent outline-none text-sm text-white placeholder-bg-bgTertiary flex-1"
+            class="bg-transparent outline-none text-sm text-main placeholder-secondary flex-1"
             @keydown="handleKeyDown"
           />
           <button
             v-if="searchQuery"
             @click="searchQuery = ''"
-            class="absolute right-3 top-1/2 -translate-y-1/2 hover:text-white transition-colors text-xl leading-none"
+            class="absolute right-3 top-1/2 -translate-y-1/2 hover:text-main transition-colors text-xl leading-none"
           >
             ✕
           </button>
@@ -78,14 +78,14 @@ const toggleSearchDropdown = () => {
                 v-model="searchQuery"
                 type="text"
                 placeholder="Search"
-                class="bg-transparent outline-none text-sm text-white placeholder-secondary flex-1"
+                class="bg-transparent outline-none text-sm text-main placeholder-secondary flex-1"
                 @keydown="handleKeyDown"
                 autofocus
               />
               <button
                 v-if="searchQuery"
                 @click="searchQuery = ''"
-                class="absolute right-12 top-1/2 -translate-y-1/2 hover:text-white transition-colors text-xl leading-none"
+                class="absolute right-12 top-1/2 -translate-y-1/2 hover:text-main transition-colors text-xl leading-none"
               >
                 ✕
               </button>
@@ -93,7 +93,7 @@ const toggleSearchDropdown = () => {
             <button
               :disabled="!searchQuery.trim()"
               @click="handleSearch"
-              class="bg-secondary opacity-70 rounded-r-md px-2 h-10 border-l-0 flex items-center justify-center disabled:cursor-not-allowed flex-shrink-0"
+              class="bg-bgTertiary opacity-70 rounded-r-md px-2 h-10 border-l-0 flex items-center justify-center disabled:cursor-not-allowed flex-shrink-0"
             >
               <img src="/icons/search.svg" alt="Search" class="w-4 h-4" />
             </button>
