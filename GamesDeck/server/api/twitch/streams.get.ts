@@ -1,18 +1,13 @@
 interface TwitchStream {
   id: string;
   user_id: string;
-  user_login: string;
   user_name: string;
-  game_id: string;
   game_name: string;
-  type: string;
   title: string;
   viewer_count: number;
   started_at: string;
-  language: string;
   thumbnail_url: string;
-  tag_ids: string[];
-  is_mature: boolean;
+  profile_image_url?: string;
 }
 
 interface TwitchApiResponse {
@@ -24,8 +19,6 @@ interface TwitchApiResponse {
 
 interface TwitchUser {
   id: string;
-  login: string;
-  display_name: string;
   profile_image_url: string;
 }
 
@@ -35,15 +28,12 @@ interface TwitchUsersResponse {
 
 interface TokenResponse {
   accessToken: string;
-  cached?: boolean;
-  expiresIn?: number;
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   try {
-    // Obtener el token de la API interna
     const tokenResponse = await $fetch<TokenResponse>("/api/twitch/token", {
-      baseURL: "http://localhost:3000", // Usar localhost para las llamadas internas
+      baseURL: "http://localhost:3000",
     });
 
     if (!tokenResponse?.accessToken) {
@@ -57,7 +47,6 @@ export default defineEventHandler(async (event) => {
       throw new Error("Missing TWITCH_CLIENT_ID in environment");
     }
 
-    // Llamar a la API de Twitch para obtener los streams en vivo
     const twitchResponse = await fetch("https://api.twitch.tv/helix/streams?first=20", {
       method: "GET",
       headers: {
@@ -73,7 +62,6 @@ export default defineEventHandler(async (event) => {
 
     const data = (await twitchResponse.json()) as TwitchApiResponse;
 
-    // Obtener los IDs de usuario para conseguir sus avatares
     const userIds = data.data.map((stream) => stream.user_id).join("&id=");
 
     let userAvatars: Record<string, string> = {};
@@ -89,14 +77,12 @@ export default defineEventHandler(async (event) => {
 
       if (usersResponse.ok) {
         const usersData = (await usersResponse.json()) as TwitchUsersResponse;
-        // Mapear avatarles por ID de usuario
         usersData.data.forEach((user) => {
           userAvatars[user.id] = user.profile_image_url;
         });
       }
     }
 
-    // Mapear los datos al formato que necesita el cliente
     const streams = data.data.map((stream) => ({
       id: stream.id,
       title: stream.title,

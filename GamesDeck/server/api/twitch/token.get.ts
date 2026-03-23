@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
   if (tokenCache && tokenCache.expiresAt > Date.now()) {
     return {
       accessToken: tokenCache.accessToken,
-      cached: true,
     };
   }
 
@@ -54,8 +53,6 @@ export default defineEventHandler(async (event) => {
 
     return {
       accessToken: data.access_token,
-      cached: false,
-      expiresIn: data.expires_in,
     };
   } catch (error) {
     console.error("Error obtaining Twitch token:", error);

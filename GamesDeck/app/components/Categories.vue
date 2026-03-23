@@ -1,18 +1,28 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useMainStore } from "../stores/main";
+import { useTwitchCategories } from "../composables/useTwitchCategories";
 
 const mainStore = useMainStore();
+const { categories, loading, fetchCategories } = useTwitchCategories();
 const gridContainer = ref<HTMLElement | null>(null);
 const columnsInRow = ref(0);
 
-// Computed properties
 const displayedCategories = computed(() => {
-  return mainStore.categories.slice(0, columnsInRow.value);
+  return categories.value.slice(0, columnsInRow.value);
 });
 
-// Lifecycle hooks
+const getThumbnailUrl = (url: string): string => {
+  return url.replace("{width}", "264").replace("{height}", "352");
+};
+
+const formatViewers = (count: number): string => {
+  return Math.round((count || 0) / 1000).toString();
+};
+
 onMounted(async () => {
+  fetchCategories();
+
   if (!gridContainer.value) return;
 
   const calculateColumns = () => {
@@ -58,8 +68,8 @@ onMounted(async () => {
           style="aspect-ratio: 1 / 1.3"
         >
           <img
-            :src="category.image"
-            :alt="`${category.name} category with ${category.viewerCount.toLocaleString()} viewers`"
+            :src="getThumbnailUrl(category.box_art_url)"
+            :alt="category.name"
             loading="lazy"
             class="w-full h-full object-cover"
           />
@@ -70,7 +80,7 @@ onMounted(async () => {
             {{ category.name }}
           </h3>
 
-          <p class="text-sm opacity-70">{{ (category.viewerCount / 1000).toFixed(0) }}K viewers</p>
+          <p class="text-sm opacity-70">{{ formatViewers(category.viewer_count || 0) }}k viewers</p>
           <div
             v-if="category.tags"
             class="flex gap-1 flex-nowrap overflow-hidden"

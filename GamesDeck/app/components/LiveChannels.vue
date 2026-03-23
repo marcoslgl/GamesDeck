@@ -60,9 +60,10 @@ onMounted(async () => {
         @click="showAll = true"
         aria-expanded="false"
         aria-label="Show more live channels"
-        class="text-primary hover:text-white hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
+        class="flex items-center gap-2 text-primary hover:text-white hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
       >
         Show more
+        <img src="/icons/down.svg" alt="" class="w-4 h-4" />
       </button>
       <div class="w-[40%] border-t border-bgTertiary" aria-hidden="true"></div>
     </div>
@@ -73,9 +74,10 @@ onMounted(async () => {
         @click="showAll = false"
         aria-expanded="true"
         aria-label="Show less live channels"
-        class="text-primary hover:text-white hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
+        class="flex items-center gap-2 text-primary hover:text-white hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
       >
         Show less
+        <img src="/icons/down.svg" alt="" class="w-4 h-4 rotate-180" />
       </button>
       <div class="w-[40%] border-t border-bgTertiary" aria-hidden="true"></div>
     </div>
