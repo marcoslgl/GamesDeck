@@ -49,7 +49,7 @@ const getThumbnailUrl = (url: string): string => {
         <p class="text-sm pb-1 opacity-70 truncate hover:text-primary">{{ stream.game_name }}</p>
 
         <div class="flex items-center gap-1 text-xs opacity-70">
-          <div class="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500"></div>
+          <div class="h-1.5 w-1.5 rounded-full bg-accent"></div>
           {{ formatViewers(stream.viewer_count) }} watching
         </div>
       </div>

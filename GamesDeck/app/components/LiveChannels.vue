@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useMainStore } from "../stores/main";
 import { useTwitch } from "../composables/useTwitch";
 import StreamCard from "./StreamCard.vue";
+import StreamCardSkeleton from "./StreamCardSkeleton.vue";
 
 const mainStore = useMainStore();
 const { streams, loading, fetchStreams } = useTwitch();
@@ -49,7 +50,16 @@ onMounted(async () => {
     </h2>
 
     <div data-grid class="px-4 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      <button v-for="stream in displayedStreams" :key="stream.id" class="text-left" @click="$emit('select', stream)">
+      <template v-if="loading">
+        <StreamCardSkeleton v-for="i in 4" :key="`skeleton-${i}`" />
+      </template>
+      <button
+        v-for="stream in displayedStreams"
+        v-else
+        :key="stream.id"
+        class="text-left"
+        @click="$emit('select', stream)"
+      >
         <StreamCard :stream="stream" />
       </button>
     </div>
@@ -60,7 +70,7 @@ onMounted(async () => {
         @click="showAll = true"
         aria-expanded="false"
         aria-label="Show more live channels"
-        class="flex items-center gap-2 text-primary hover:text-white hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
+        class="flex items-center gap-2 text-primary hover:text-main hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
       >
         Show more
         <img src="/icons/down.svg" alt="" class="w-4 h-4" />
@@ -74,7 +84,7 @@ onMounted(async () => {
         @click="showAll = false"
         aria-expanded="true"
         aria-label="Show less live channels"
-        class="flex items-center gap-2 text-primary hover:text-white hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
+        class="flex items-center gap-2 text-primary hover:text-main hover:bg-bgTertiary p-2 rounded-full transition-colors text-sm font-medium whitespace-nowrap"
       >
         Show less
         <img src="/icons/down.svg" alt="" class="w-4 h-4 rotate-180" />
