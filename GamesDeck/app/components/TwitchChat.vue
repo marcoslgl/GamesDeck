@@ -14,7 +14,7 @@ const hostname = ref("");
 
 const chatIframeUrl = computed(() => {
   if (!props.channelName || !hostname.value) return "";
-  return `${CHAT_URL_BASE}/${props.channelName}/chat?parent=${hostname.value}&darkpixel=on`;
+  return `${CHAT_URL_BASE}/${props.channelName}/chat?parent=${hostname.value}`;
 });
 
 onMounted(() => {
@@ -34,8 +34,8 @@ onMounted(() => {
 
   <aside
     :class="[
-      'bg-bgTertiary border-l border-secondary flex flex-col w-96 transition-all duration-300',
-      'lg:static lg:h-[calc(100vh-3.5rem)]',
+      'bg-bg border-l border-secondary flex flex-col w-96 transition-all duration-300',
+      'lg:sticky lg:top-14 lg:h-[calc(100vh-3.5rem)]',
       'max-lg:fixed max-lg:top-14 max-lg:right-0 max-lg:h-[calc(100vh-3.5rem)] max-lg:z-40',
       { 'max-lg:translate-x-full': !isOpen },
       { hidden: !isOpen },
@@ -58,7 +58,7 @@ onMounted(() => {
         :src="chatIframeUrl"
         width="100%"
         height="100%"
-        style="border: none"
+        style="filter: invert(1) hue-rotate(180deg)"
         allow="autoplay"
         allowfullscreen
         :title="`Chat for ${channelName}`"
