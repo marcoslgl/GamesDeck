@@ -1,15 +1,15 @@
 # GamesDeck
 
-A **Nuxt (Vue)** web app to discover and watch live streams powered by the **Twitch Developers API**.
+A web app to discover and watch live streams powered by the **Twitch Developers API** (Helix).
 
 ## Live demo
 Production deployment (Vercel):
 - https://games-deck.vercel.app/
 
-## What it does
-- Browse and discover Twitch live streams.
-- Fetches real-time data from the Twitch Developers API (Helix).
-- Simple, responsive UI built with Vue/Nuxt.
+## Features
+- Browse and discover Twitch live streams
+- Real-time data fetched from Twitch Helix endpoints
+- Responsive UI built with Nuxt + Vue
 
 ## Tech stack
 - **Nuxt** (Vue)
@@ -23,19 +23,17 @@ Production deployment (Vercel):
 ## Twitch setup
 1. Create an app in the Twitch Developer Console.
 2. Copy your **Client ID** and **Client Secret**.
-3. If your implementation uses OAuth redirects, add your local and production redirect URLs in the Twitch app settings.
+3. If your project uses OAuth redirects, add your local and production redirect URLs in the Twitch app settings.
 
 ## Environment variables
-Create a `.env` file (or `.env.local`) and set your Twitch credentials.
+Create a `.env` file (or `.env.local`) and add your Twitch credentials.
 
-> Note: variable names can differ depending on your implementation. Adjust them to match your code.
+> Note: exact variable names depend on your implementation. Adjust to match the ones used in your code.
 
 Example:
 ```bash
 TWITCH_CLIENT_ID=your_client_id
 TWITCH_CLIENT_SECRET=your_client_secret
-# If you use OAuth:
-TWITCH_REDIRECT_URI=http://localhost:3000
 ```
 
 ## Install
@@ -50,7 +48,7 @@ npm install
 npm run dev
 ```
 
-## Build
+## Build / Preview
 ```bash
 npm run build
 npm run preview
