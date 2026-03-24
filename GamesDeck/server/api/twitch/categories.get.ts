@@ -20,21 +20,6 @@ interface TwitchStreamsResponse {
 interface TokenResponse {
   accessToken: string;
 }
-const GAME_TAGS: Record<string, string[]> = {
-  "League of Legends": ["MOBA", "Competitive", "Ranked"],
-  Valorant: ["FPS", "Competitive", "Tactical"],
-  "Elden Ring": ["RPG", "Souls-like", "Adventure"],
-  Fortnite: ["Battle Royale", "Building", "Action"],
-  "Just Chatting": ["Casual", "Social", "IRL"],
-  Minecraft: ["Sandbox", "Creative", "Survival"],
-  "Counter-Strike 2": ["FPS", "Competitive", "Esports"],
-  "Dota 2": ["MOBA", "Competitive", "Strategy"],
-  Rust: ["Survival", "MMO", "PvP"],
-  "Cyberpunk 2077": ["RPG", "Action", "Open World"],
-  "Baldur's Gate 3": ["RPG", "Fantasy", "Adventure"],
-  "World of Warcraft": ["MMO", "RPG", "Fantasy"],
-  Starfield: ["RPG", "Space", "Adventure"],
-};
 
 export default defineEventHandler(async () => {
   try {
@@ -92,7 +77,6 @@ export default defineEventHandler(async () => {
       name: game.name,
       box_art_url: game.box_art_url,
       viewer_count: viewersByGame[game.id] || 0,
-      tags: GAME_TAGS[game.name] || ["Gaming", "Live", "Entertainment"],
     }));
 
     return {

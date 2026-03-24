@@ -8,6 +8,7 @@ export interface Stream {
   game_name?: string;
   started_at?: string;
   profile_image_url?: string;
+  description?: string;
 }
 
 interface StreamsResponse {

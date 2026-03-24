@@ -21,8 +21,8 @@ onMounted(() => {
 <template>
   <aside
     :class="[
-      'bg-bgTertiary border-r border-bgTertiary transition-all duration-300 overflow-y-auto overflow-x-hidden flex flex-col',
-      'w-16',
+      'bg-bgTertiary border-r border-bgTertiary transition-all duration-300 overflow-x-hidden flex flex-col',
+      'w-14',
       { 'lg:w-64': !isCollapsed },
     ]"
   >
@@ -35,9 +35,10 @@ onMounted(() => {
         <img src="/icons/arrow.svg" alt="Toggle" class="w-5 h-5" :class="{ 'rotate-180': isCollapsed }" />
       </button>
     </div>
-    <ul class="space-y-3 px-2" role="list" aria-label="Canales recomendados">
+    <ul class="space-y-3" role="list" aria-label="Canales recomendados">
       <li v-for="streamer in recommendedStreams" :key="streamer.id">
-        <div
+        <NuxtLink
+          :to="`/${streamer.user_name}`"
           class="flex items-center gap-3 p-2 cursor-pointer relative group w-full"
           :class="{ 'justify-center': isCollapsed }"
         >
@@ -54,9 +55,9 @@ onMounted(() => {
           </div>
           <div v-if="!isCollapsed" class="flex items-center gap-1 text-xs flex-shrink-0">
             <img src="/icons/active.svg" alt="Live" class="w-2 h-2" />
-            <span class="whitespace-nowrap opacity-70">{{ streamer.viewer_count.toLocaleString() }}</span>
+            <span class="whitespace-nowrap opacity-70">{{ streamer.viewer_count.toLocaleString("es-ES") }}</span>
           </div>
-        </div>
+        </NuxtLink>
       </li>
     </ul>
   </aside>

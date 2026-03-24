@@ -53,15 +53,15 @@ onMounted(async () => {
       <template v-if="loading">
         <StreamCardSkeleton v-for="i in 4" :key="`skeleton-${i}`" />
       </template>
-      <button
+      <NuxtLink
         v-for="stream in displayedStreams"
         v-else
         :key="stream.id"
+        :to="`${stream.user_name}`"
         class="text-left"
-        @click="$emit('select', stream)"
       >
         <StreamCard :stream="stream" />
-      </button>
+      </NuxtLink>
     </div>
 
     <div v-if="!showAll && streams.length > columnsInRow" class="flex items-center justify-center gap-4 py-6">

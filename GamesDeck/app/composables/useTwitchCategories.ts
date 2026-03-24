@@ -3,7 +3,6 @@ export interface Category {
   name: string;
   box_art_url: string;
   viewer_count?: number;
-  tags?: string[];
 }
 
 interface CategoriesResponse {

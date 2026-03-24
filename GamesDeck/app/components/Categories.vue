@@ -86,27 +86,12 @@ onMounted(async () => {
           </h3>
 
           <p class="text-sm opacity-70">{{ formatViewers(category.viewer_count || 0) }}k viewers</p>
-          <div
-            v-if="category.tags"
-            class="flex gap-1 flex-nowrap overflow-hidden"
-            role="list"
-            aria-label="Category tags"
-          >
-            <span
-              v-for="tag in category.tags"
-              :key="tag"
-              role="listitem"
-              class="text-xs bg-bgTertiary px-2 py-0.5 rounded-full flex-shrink-0 hover:bg-secondary transition-colors"
-            >
-              {{ tag }}
-            </span>
-          </div>
         </div>
       </div>
     </div>
 
-    <div class="mt-6 px-2">
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-x-6 gap-y-8">
+    <div class="mt-6 px-4 pb-5">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-x-4 gap-y-8 w-full">
         <div
           v-for="mainCat in mainStore.mainCategories"
           :key="mainCat.id"
@@ -123,7 +108,7 @@ onMounted(async () => {
             <h4 class="text-lg font-bold text-main flex-1 self-center relative z-10 whitespace-normal">
               {{ mainCat.name }}
             </h4>
-            <img :src="mainCat.icon" :alt="`${mainCat.name} icon`" class="w-20 h-20 flex-shrink-0 ml-3 -mt-4" />
+            <img :src="mainCat.icon" :alt="mainCat.name" class="w-16 h-16 self-center" />
           </div>
         </div>
       </div>

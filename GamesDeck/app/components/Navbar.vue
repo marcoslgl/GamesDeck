@@ -24,11 +24,11 @@ const toggleSearchDropdown = () => {
 </script>
 
 <template>
-  <header class="sticky top-0 z-40 bg-bgSecondary">
-    <nav class="px-4 py-2 flex justify-between items-center gap-6" role="navigation" aria-label="Navegación principal">
+  <header class="sticky top-0 z-40 bg-bgSecondary overflow-hidden">
+    <nav class="px-4 py-2 flex justify-between items-center gap-3" role="navigation" aria-label="Navegación principal">
       <div class="flex items-center gap-2">
-        <div class="text-xl font-bold">GamesDeck</div>
-        <div class="bg-bgSecondary rounded-full p-2 hover:bg-bgTertiary transition-colors cursor-pointer">
+        <NuxtLink to="/" class="text-xl font-bold">GamesDeck</NuxtLink>
+        <div class="bg-bgSecondary p-2 rounded-full hover:bg-bgTertiary transition-colors cursor-pointer">
           <img src="/icons/dots.svg" alt="Menu" class="w-4 h-4" />
         </div>
       </div>
@@ -72,7 +72,7 @@ const toggleSearchDropdown = () => {
 
           <div v-if="showSearchDropdown" class="absolute top-12 right-0 z-50 md:hidden flex">
             <div
-              class="border border-main rounded-l-md px-3 py-2 flex items-center gap-2 transition-all focus-within:ring-2 focus-within:ring-primary focus-within:border-primary w-64 relative focus-ring-3sides bg-bgSecondary"
+              class="border border-main rounded-l-md px-3 py-2 flex items-center gap-2 transition-all focus-within:ring-2 focus-within:ring-primary focus-within:border-primary w-48 relative focus-ring-3sides bg-bgSecondary"
             >
               <input
                 v-model="searchQuery"

@@ -8,6 +8,8 @@ interface TwitchStream {
   started_at: string;
   thumbnail_url: string;
   profile_image_url?: string;
+  description?: string;
+  follower_count?: number;
 }
 
 interface TwitchApiResponse {
@@ -20,6 +22,7 @@ interface TwitchApiResponse {
 interface TwitchUser {
   id: string;
   profile_image_url: string;
+  description: string;
 }
 
 interface TwitchUsersResponse {
@@ -62,12 +65,14 @@ export default defineEventHandler(async () => {
 
     const data = (await twitchResponse.json()) as TwitchApiResponse;
 
-    const userIds = data.data.map((stream) => stream.user_id).join("&id=");
+    const userIds = data.data.map((stream) => stream.user_id);
+    const userIdString = userIds.map((id) => `id=${id}`).join("&");
 
     let userAvatars: Record<string, string> = {};
+    let userDescriptions: Record<string, string> = {};
 
-    if (userIds) {
-      const usersResponse = await fetch(`https://api.twitch.tv/helix/users?id=${userIds}`, {
+    if (userIds.length > 0) {
+      const usersResponse = await fetch(`https://api.twitch.tv/helix/users?${userIdString}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -79,6 +84,7 @@ export default defineEventHandler(async () => {
         const usersData = (await usersResponse.json()) as TwitchUsersResponse;
         usersData.data.forEach((user) => {
           userAvatars[user.id] = user.profile_image_url;
+          userDescriptions[user.id] = user.description;
         });
       }
     }
@@ -93,6 +99,7 @@ export default defineEventHandler(async () => {
       game_name: stream.game_name,
       started_at: stream.started_at,
       profile_image_url: userAvatars[stream.user_id] || "/icon.svg",
+      description: userDescriptions[stream.user_id] || "",
     }));
 
     return {

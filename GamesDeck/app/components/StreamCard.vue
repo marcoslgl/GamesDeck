@@ -6,13 +6,7 @@ const props = defineProps<{
 }>();
 
 const formatViewers = (count: number): string => {
-  if (count >= 1000000) {
-    return `${(count / 1000000).toFixed(1)}M`;
-  }
-  if (count >= 1000) {
-    return `${(count / 1000).toFixed(1)}K`;
-  }
-  return count.toString();
+  return count.toLocaleString("es-ES");
 };
 
 const getThumbnailUrl = (url: string): string => {
@@ -49,7 +43,7 @@ const getThumbnailUrl = (url: string): string => {
         <p class="text-sm pb-1 opacity-70 truncate hover:text-primary">{{ stream.game_name }}</p>
 
         <div class="flex items-center gap-1 text-xs opacity-70">
-          <div class="h-1.5 w-1.5 rounded-full bg-accent"></div>
+          <img src="/icons/active.svg" alt="live" class="w-2 h-2" />
           {{ formatViewers(stream.viewer_count) }} watching
         </div>
       </div>
