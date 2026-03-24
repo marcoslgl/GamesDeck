@@ -149,9 +149,26 @@ const calculateStreamDuration = (startedAt: string): string => {
         <footer class="mt-6">
           <div v-if="stream.description" class="bg-bgTertiary rounded-lg p-4">
             <h2 class="text-lg font-bold mb-4">About {{ stream.user_name }}</h2>
-            <p class="text-sm text-text-secondary">{{ stream.description }}</p>
-            <div class="w-[80%] border-t border-secondary" aria-hidden="true"></div>
-            <p>hola</p>
+            <p class="text-sm pb-6">{{ stream.description }}</p>
+            <div class="w-[100%] border-t border-secondary pb-6" aria-hidden="true"></div>
+            <div class="flex gap-8">
+              <button class="flex items-center gap-2 text-sm">
+                <img src="/icons/youtube.svg" alt="YouTube" class="w-5 h-5" />
+                YouTube
+              </button>
+              <button class="flex items-center gap-2 text-sm">
+                <img src="/icons/instagram.svg" alt="Instagram" class="w-5 h-5" />
+                Instagram
+              </button>
+              <button class="flex items-center gap-2 text-sm">
+                <img src="/icons/twitter.svg" alt="Twitter" class="w-5 h-5" />
+                Twitter
+              </button>
+              <button class="flex items-center gap-2 text-sm">
+                <img src="/icons/tiktok.svg" alt="TikTok" class="w-5 h-5" />
+                TikTok
+              </button>
+            </div>
           </div>
         </footer>
       </section>
