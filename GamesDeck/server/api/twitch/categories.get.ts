@@ -23,9 +23,7 @@ interface TokenResponse {
 
 export default defineEventHandler(async () => {
   try {
-    const tokenResponse = await $fetch<TokenResponse>("/api/twitch/token", {
-      baseURL: "http://localhost:3000",
-    });
+    const tokenResponse = await $fetch<TokenResponse>("/api/twitch/token");
 
     if (!tokenResponse?.accessToken) {
       throw new Error("Failed to obtain access token");
