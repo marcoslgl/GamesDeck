@@ -12,6 +12,7 @@ const { streams, fetchStreams } = useTwitch();
 
 const hostname = ref("");
 const streamDuration = ref("00:00:00");
+const isChatOpen = ref(false);
 let timerInterval: number | null = null;
 
 const stream = computed(() => {
@@ -73,11 +74,15 @@ const calculateStreamDuration = (startedAt: string): string => {
   const pad = (num: number): string => String(num).padStart(2, "0");
   return `${hours}:${pad(minutes)}:${pad(seconds)}`;
 };
+
+const toggleChat = () => {
+  isChatOpen.value = !isChatOpen.value;
+};
 </script>
 
 <template>
-  <div class="w-full">
-    <article v-if="stream" class="w-full">
+  <div class="w-full flex lg:flex-row flex-col">
+    <article v-if="stream" class="w-full lg:flex-1 flex flex-col">
       <section class="w-full bg-black flex justify-center">
         <div class="w-full max-w-7xl aspect-video">
           <iframe
@@ -173,5 +178,7 @@ const calculateStreamDuration = (startedAt: string): string => {
         </footer>
       </section>
     </article>
+
+    <TwitchChat :channel-name="stream.user_name" :is-open="isChatOpen" :on-toggle="toggleChat" />
   </div>
 </template>
