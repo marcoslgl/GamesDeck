@@ -1,11 +1,11 @@
-import { ref, nextTick, onBeforeUnmount } from "vue";
+import { ref, nextTick, onBeforeUnmount, type Ref } from "vue";
 
-export const useGridColumns = (gridContainer: Ref<HTMLElement | null>) => {
+export const useGridColumns = () => {
   const columnsInRow = ref(0);
 
-  const calculateColumns = () => {
-    if (!gridContainer.value) return;
-    const gridElement = gridContainer.value.querySelector("[data-grid]") as HTMLElement;
+  const calculateColumns = (gridContainer: HTMLElement | null) => {
+    if (!gridContainer) return;
+    const gridElement = gridContainer.querySelector("[data-grid]") as HTMLElement;
     if (!gridElement) return;
 
     const gridStyle = window.getComputedStyle(gridElement);
@@ -13,16 +13,18 @@ export const useGridColumns = (gridContainer: Ref<HTMLElement | null>) => {
     columnsInRow.value = columnCount;
   };
 
-  const init = async () => {
+  const init = async (gridContainer: Ref<HTMLElement | null>) => {
     await nextTick();
-    calculateColumns();
+    calculateColumns(gridContainer.value);
 
-    const resizeObserver = new ResizeObserver(calculateColumns);
-    resizeObserver.observe(gridContainer.value!);
+    const resizeObserver = new ResizeObserver(() => calculateColumns(gridContainer.value));
+    if (gridContainer.value) {
+      resizeObserver.observe(gridContainer.value);
 
-    onBeforeUnmount(() => {
-      resizeObserver.disconnect();
-    });
+      onBeforeUnmount(() => {
+        resizeObserver.disconnect();
+      });
+    }
   };
 
   return { columnsInRow, init };

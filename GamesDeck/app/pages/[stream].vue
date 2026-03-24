@@ -1,23 +1,25 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useTwitch } from "../composables/useTwitch";
+import { useFormatter } from "../composables/useFormatter";
+import { useStreamTimer } from "../composables/useStreamTimer";
 
-const TIMER_INTERVAL = 1000;
 const STREAM_URL_BASE = "https://player.twitch.tv/";
 
 const route = useRoute();
 const streamId = route.params.stream as string;
 const { streams, fetchStreams } = useTwitch();
+const { formatViewers } = useFormatter();
 
 const hostname = ref("");
-const streamDuration = ref("00:00:00");
 const isChatOpen = ref(false);
-let timerInterval: number | null = null;
 
 const stream = computed(() => {
   return streams.value.find((s) => s.user_name === streamId);
 });
+
+const { streamDuration } = useStreamTimer(stream);
 
 const iframeUrl = computed(() => {
   if (!stream.value || !hostname.value) return "";
@@ -27,53 +29,7 @@ const iframeUrl = computed(() => {
 onMounted(() => {
   fetchStreams();
   hostname.value = window.location.hostname;
-  startStreamTimer();
 });
-
-onUnmounted(() => {
-  stopStreamTimer();
-});
-
-watch(
-  () => stream.value?.started_at,
-  (startedAt) => {
-    if (startedAt) {
-      streamDuration.value = calculateStreamDuration(startedAt);
-    }
-  },
-);
-
-const startStreamTimer = () => {
-  timerInterval = window.setInterval(() => {
-    if (stream.value?.started_at) {
-      streamDuration.value = calculateStreamDuration(stream.value.started_at);
-    }
-  }, TIMER_INTERVAL);
-};
-
-const stopStreamTimer = () => {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-};
-
-const formatViewers = (count: number): string => {
-  return count.toLocaleString("en-US");
-};
-
-const calculateStreamDuration = (startedAt: string): string => {
-  const start = new Date(startedAt);
-  const now = new Date();
-  const diffMs = now.getTime() - start.getTime();
-
-  const hours = Math.floor(diffMs / (1000 * 60 * 60));
-  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-  const pad = (num: number): string => String(num).padStart(2, "0");
-  return `${hours}:${pad(minutes)}:${pad(seconds)}`;
-};
 
 const toggleChat = () => {
   isChatOpen.value = !isChatOpen.value;
@@ -81,8 +37,8 @@ const toggleChat = () => {
 </script>
 
 <template>
-  <div class="w-full flex lg:flex-row flex-col">
-    <article v-if="stream" class="w-full lg:flex-1 flex flex-col">
+  <div v-if="stream" class="w-full flex lg:flex-row flex-col">
+    <article class="w-full lg:flex-1 flex flex-col">
       <section class="w-full bg-black flex justify-center">
         <div class="w-full max-w-7xl aspect-video">
           <iframe

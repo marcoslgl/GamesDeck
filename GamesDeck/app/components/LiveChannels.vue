@@ -1,45 +1,24 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, nextTick } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useMainStore } from "../stores/main";
 import { useTwitch } from "../composables/useTwitch";
+import { useGridColumns } from "../composables/useGridColumns";
 import StreamCard from "./StreamCard.vue";
-import StreamCardSkeleton from "./StreamCardSkeleton.vue";
+import Skeleton from "./Skeleton.vue";
 
 const mainStore = useMainStore();
 const { streams, loading, fetchStreams } = useTwitch();
 const showAll = ref(false);
 const gridContainer = ref<HTMLElement | null>(null);
-const columnsInRow = ref(0);
-const isReady = ref(false);
+const { columnsInRow, init } = useGridColumns();
 
 const displayedStreams = computed(() => {
   return showAll.value ? streams.value : streams.value.slice(0, columnsInRow.value);
 });
 
 onMounted(async () => {
-  fetchStreams();
-
-  if (!gridContainer.value) return;
-
-  const calculateColumns = () => {
-    const gridElement = gridContainer.value?.querySelector("[data-grid]") as HTMLElement;
-    if (!gridElement) return;
-
-    const gridStyle = window.getComputedStyle(gridElement);
-    const columnCount = gridStyle.gridTemplateColumns.split(" ").length;
-    columnsInRow.value = columnCount;
-    isReady.value = true;
-  };
-
-  await nextTick();
-  calculateColumns();
-
-  const resizeObserver = new ResizeObserver(calculateColumns);
-  resizeObserver.observe(gridContainer.value);
-
-  onBeforeUnmount(() => {
-    resizeObserver.disconnect();
-  });
+  await fetchStreams();
+  await init(gridContainer);
 });
 </script>
 
@@ -51,7 +30,7 @@ onMounted(async () => {
 
     <div data-grid class="px-4 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       <template v-if="loading">
-        <StreamCardSkeleton v-for="i in 4" :key="`skeleton-${i}`" />
+        <Skeleton v-for="i in 4" :key="`skeleton-${i}`" />
       </template>
       <NuxtLink
         v-for="stream in displayedStreams"

@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import type { Stream } from "../composables/useTwitch";
+import { useFormatter } from "../composables/useFormatter";
 
 const props = defineProps<{
   stream: Stream & { game_name?: string; started_at?: string };
 }>();
 
-const formatViewers = (count: number): string => {
-  return count.toLocaleString("es-ES");
-};
-
-const getThumbnailUrl = (url: string): string => {
-  return url.replace("{width}", "320").replace("{height}", "180");
-};
+const { formatViewers, getThumbnailUrl } = useFormatter();
 </script>
 <template>
   <div class="group cursor-pointer flex flex-col">
@@ -19,7 +14,7 @@ const getThumbnailUrl = (url: string): string => {
       class="mb-3 flex-shrink-0 aspect-video overflow-hidden transition-all hover:translate-x-1 hover:-translate-y-1 hover:border-l-[6px] hover:border-b-[6px] hover:border-primary rounded"
     >
       <img
-        :src="getThumbnailUrl(stream.thumbnail_url)"
+        :src="getThumbnailUrl(stream.thumbnail_url, 320, 180)"
         :alt="`${stream.title} - ${stream.user_name}`"
         loading="lazy"
         class="w-full h-full object-cover"
